@@ -1,7 +1,9 @@
 function App() {
   return (
-    <div>
-      <h1>Quiz App</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <h1 className="text-3xl font-bold text-indigo-600">
+        Quiz App
+      </h1>
     </div>
   );
 }
