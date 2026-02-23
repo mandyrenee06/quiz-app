@@ -63,16 +63,28 @@ function App() {
           <h2 className="text-xl font-bold mb-4">
             {questions[currentQuestion].question}
           </h2>
-
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+          <div
+           className="bg-indigo-600 h-2 rounded-full transition-all duration-300"
+           style={{
+             width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+           }}
+         ></div>
+        </div>
           <div className="space-y-3 mb-4">
             {questions[currentQuestion].options.map((option, index) => (
               <button
                 key={index}
+                disabled={selectedAnswer !== null}
                 onClick={() => handleAnswerClick(option)}
                 className={`w-full p-2 rounded-lg transition ${
-                  selectedAnswer === option
-                    ? "bg-indigo-500 text-white"
-                    : "bg-gray-200 hover:bg-indigo-500 hover:text-white"
+                selectedAnswer
+                   ? option === questions[currentQuestion].answer
+                     ? "bg-green-500 text-white"
+                     : option === selectedAnswer
+                     ? "bg-red-500 text-white"
+                     : "bg-gray-200"
+                   : "bg-gray-200 hover:bg-indigo-500 hover:text-white"
                 }`}
               >
                 {option}
