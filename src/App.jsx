@@ -45,8 +45,11 @@ function App() {
       ) : quizFinished ? (
         <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-center">
           <h2 className="text-2xl font-bold mb-4">Quiz Finished 🎉</h2>
-          <p className="mb-6">
+          <p className="mb-2">
             Your Score: {score} / {questions.length}
+          </p>
+          <p className="mb-6 font-semibold">
+            Percentage: {Math.round((score / questions.length) * 100)}%
           </p>
           <button
             onClick={restartQuiz}
@@ -72,34 +75,53 @@ function App() {
          ></div>
         </div>
           <div className="space-y-3 mb-4">
-            {questions[currentQuestion].options.map((option, index) => (
-              <button
-                key={index}
-                disabled={selectedAnswer !== null}
-                onClick={() => handleAnswerClick(option)}
-                className={`w-full p-2 rounded-lg transition ${
-                selectedAnswer
-                   ? option === questions[currentQuestion].answer
-                     ? "bg-green-500 text-white"
-                     : option === selectedAnswer
-                     ? "bg-red-500 text-white"
-                     : "bg-gray-200"
-                   : "bg-gray-200 hover:bg-indigo-500 hover:text-white"
-                }`}
-              >
-                {option}
+            {questions[currentQuestion].options.map((option, index) => {
+              const correctAnswer = questions[currentQuestion].answer;
+
+              let buttonStyle = "bg-gray-200 hover:bg-indigo-500 hover:text-white";
+
+              if (selectedAnswer !== null) {
+               if (option === correctAnswer) {
+                 buttonStyle = "bg-green-500 text-white";
+               } else if (option === selectedAnswer) {
+                buttonStyle = "bg-red-500 text-white";
+               } else {
+                buttonStyle = "bg-gray-200";
+               }
+              }
+
+              return (
+               <button
+                 key={index}
+                 disabled={selectedAnswer !== null}
+                 onClick={() => handleAnswerClick(option)}
+                 className={`w-full p-2 rounded-lg ${buttonStyle}`}
+               >
+                 {option}
               </button>
-            ))}
+            );
+          })}
+            
           </div>
 
           {selectedAnswer && (
+            <p className="mt-3 text-center font-semibold">
+              {selectedAnswer === questions[currentQuestion].answer
+                ? "✅ Correct!"
+                : "❌ Wrong!"}
+              </p>
+             )}
             <button
               onClick={handleNext}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+              disabled={selectedAnswer === null}
+              className={`w-full py-2 rounded-lg text-white ${
+                selectedAnswer === null
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
             >
               Next
             </button>
-          )}
         </div>
       )}
     </div>
